@@ -4,12 +4,9 @@ const {gql} = require('apollo-server');
 const typeDefs = gql`
   type Query {
     hello: String,
-    # rollThreeDice: [Int]
+    rollDice(numDice: Int!, numSides: Int): [Int]
+    calculateSum(a: Int!, b: Int!): Int!
   }
-  `;
-
-//   type Mutation {
-//     rollDice(numDice: Int!, numSides: Int): [Int]
-//   }
+  `
 
 module.exports = typeDefs;
