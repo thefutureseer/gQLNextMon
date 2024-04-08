@@ -1,20 +1,21 @@
+// // A map of functions which return data for the schema.
 const resolvers = {
-Query : {
-    hello: ()=>{
+ Query : {
+  hello: ()=>{
         console.log("heoo in console")
         return "hello world!"
-    },
+  },
 
-calculateSum: (parent, args, context,info) => {
+  calculateSum: (parent, args, context,info) => {
     const {a, b} = args
     return a + b;
-},
+  },
 
-rollDice: (root, args , context, info ) => {
+  rollDice: (root, args , context, info ) => {
     const {numDice, numSides} = args;
-     console.log("heoo in console #2", args);
+    console.log("heoo in console #2", args);
     try {
-       console.log('Resolver invoked with numDice:', numDice, 'and numSides:', numSides);
+    console.log('Resolver invoked with numDice:', numDice, 'and numSides:', numSides);
 
     // Validate input parameters
         if (!Number.isInteger(numDice) || numDice <= 0) {
@@ -34,7 +35,7 @@ rollDice: (root, args , context, info ) => {
             // If an error occurs during execution, return the error message
             throw new Error(`Failed to roll dice: ${error.message}`);
         }
-    return output;
+     return output;
     },
   }
 };
