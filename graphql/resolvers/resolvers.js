@@ -1,7 +1,10 @@
+var {RandomDie} = require('./RandomDie');
+
+// The root/parent provides the top-level API endpoints
 // // A map of functions which return data for the schema.
 const resolvers = {
  Query : {
-  hello: ()=>{
+  hello: () => {
         console.log("heoo in console")
         return "hello world!"
   },
@@ -37,6 +40,22 @@ const resolvers = {
         }
      return output;
     },
-  }
+
+    getDie: (_, { numSides }) => {
+        return new RandomDie(numSides)
+      },
+  },
+
+  RandomDie: {
+    numSides: (obj) => {
+      return obj.numSides;
+    },
+    rollOnce: (obj) => {
+      return obj.rollOnce();
+    },
+    roll: (obj, { numRolls }) => {
+      return obj.roll({ numRolls });
+    },
+  },
 };
-module.exports = resolvers;
+module.exports = {resolvers};
