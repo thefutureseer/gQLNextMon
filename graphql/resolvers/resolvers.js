@@ -1,13 +1,23 @@
 var {RandomDie} = require('./RandomDie');
 const {Message} = require('./MessageClass');
 
-var fakeDatabase = {};
+var fakeDatabase = {
+  messages: [
+    { id: '1', content: 'First message', author: "dude" }
+  ]
+};
 
 // The root/parent provides the top-level API endpoints
 // // A map of functions which return data for the schema.
 const resolvers = {
   Query : {
-    getMessage(___, { id }) {
+    //Get everything in fake database
+    getAllMessages: (_____, args)=>{
+
+      return fakeDatabase;
+    },
+    //Get a message by id
+    getMessage: (___, { id }) => {
       if (!fakeDatabase[id]) {
         throw new Error("no message exists with id " + id)
       }
@@ -68,17 +78,23 @@ const resolvers = {
   },
   
   Mutation: {
-      setMessage: ({ message }) => {
-        fakeDatabase.message = message
-        return message
-      },
+      // //Set "message" on to the object of fakeDatabase
+      // setMessage: (____, { message }) => {
+      //   fakeDatabase.messages = message
+      //   return message
+      // },
+      //Create a new one
       createMessage(_, { input }) {
         // Create a random id for our "database".
         var id = require("crypto").randomBytes(10).toString("hex")
      
         fakeDatabase[id] = input
+          // Add the message to the messages array in fakeDatabase
+        fakeDatabase.messages.push({ id, ...input });
+
         return new Message(id, input)
       },
+      //Update an old one
       updateMessage(__, { id, input }) {
         if (!fakeDatabase[id]) {
           throw new Error("no message exists with id " + id)
