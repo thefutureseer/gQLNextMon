@@ -16,9 +16,22 @@ const typeDefs = gql(`
     getMessage: String
   }
 
+  input MessageInput {
+    content: String
+    author: String
+  }
+   
+  type Message {
+    id: ID!
+    content: String
+    author: String
+  }
+
   type Mutation {
-  setMessage(message: String): String
-}
+    setMessage(message: String): String
+    createMessage(input: MessageInput): Message
+    updateMessage(id: ID!, input: MessageInput): Message
+  }
 `)
 
 module.exports = typeDefs;
