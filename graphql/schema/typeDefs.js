@@ -13,7 +13,12 @@ const typeDefs = gql(`
     rollDice(numDice: Int!, numSides: Int): [Int]
     calculateSum(a: Int!, b: Int!): Int!
     getDie(numSides: Int!): RandomDie
+    getMessage: String
   }
+
+  type Mutation {
+  setMessage(message: String): String
+}
 `)
 
 module.exports = typeDefs;
