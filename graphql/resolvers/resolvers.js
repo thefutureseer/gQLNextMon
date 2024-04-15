@@ -1,10 +1,19 @@
 var {RandomDie} = require('./RandomDie');
+const {Message} = require('./MessageClass');
+
+var fakeDatabase = {};
 
 // The root/parent provides the top-level API endpoints
 // // A map of functions which return data for the schema.
 const resolvers = {
- Query : {
-  hello: () => {
+  Query : {
+    getMessage(___, { id }) {
+      if (!fakeDatabase[id]) {
+        throw new Error("no message exists with id " + id)
+      }
+      return new Message(id, fakeDatabase[id])
+    },
+    hello: () => {
         console.log("heoo in console")
         return "hello world!"
   },
@@ -34,11 +43,11 @@ const resolvers = {
         }
         console.log("this is output: ", output);
         return output;
-        } catch (error) {
-            // If an error occurs during execution, return the error message
-            throw new Error(`Failed to roll dice: ${error.message}`);
-        }
-     return output;
+      } catch (error) {
+        // If an error occurs during execution, return the error message
+        throw new Error(`Failed to roll dice: ${error.message}`);
+      }
+      return output;
     },
 
     getDie: (_, { numSides }) => {
@@ -57,5 +66,27 @@ const resolvers = {
       return obj.roll({ numRolls });
     },
   },
+  
+  Mutation: {
+      setMessage: ({ message }) => {
+        fakeDatabase.message = message
+        return message
+      },
+      createMessage(_, { input }) {
+        // Create a random id for our "database".
+        var id = require("crypto").randomBytes(10).toString("hex")
+     
+        fakeDatabase[id] = input
+        return new Message(id, input)
+      },
+      updateMessage(__, { id, input }) {
+        if (!fakeDatabase[id]) {
+          throw new Error("no message exists with id " + id)
+        }
+        // This replaces all old data, but some apps might want partial update.
+        fakeDatabase[id] = input
+        return new Message(id, input)
+      },
+    }
 };
 module.exports = {resolvers};
