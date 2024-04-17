@@ -4,6 +4,6 @@ class Message {
     this.content = content
     this.author = author
   }
-}
+};
 
-module.exports = {Message}
+module.exports = {Message};
