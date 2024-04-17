@@ -9,11 +9,17 @@ const typeDefs = gql(`
   }
 
   type Query {
-    hello: String,
+    ip: String
+    hello: String
     rollDice(numDice: Int!, numSides: Int): [Int]
     calculateSum(a: Int!, b: Int!): Int!
     getDie(numSides: Int!): RandomDie
-    getMessage: String
+    getMessage(id: ID!): Message
+    getAllMessages: fakeDatabase!
+  }
+
+  type fakeDatabase {
+    messages: [Message!]!
   }
 
   input MessageInput {
@@ -28,7 +34,6 @@ const typeDefs = gql(`
   }
 
   type Mutation {
-    setMessage(message: String): String
     createMessage(input: MessageInput): Message
     updateMessage(id: ID!, input: MessageInput): Message
   }
