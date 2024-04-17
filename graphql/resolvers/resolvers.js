@@ -11,9 +11,13 @@ var fakeDatabase = {
 // // A map of functions which return data for the schema.
 const resolvers = {
   Query : {
+    ip: (parent,args, {ip})=>{
+      // const {ip} = context;
+      return ip;
+    },
     //Get everything in fake database
-    getAllMessages: (_____, args)=>{
-
+    getAllMessages: ()=>{
+      // console.log(fakeDatabase)
       return fakeDatabase;
     },
     //Get a message by id
@@ -78,11 +82,6 @@ const resolvers = {
   },
   
   Mutation: {
-      // //Set "message" on to the object of fakeDatabase
-      // setMessage: (____, { message }) => {
-      //   fakeDatabase.messages = message
-      //   return message
-      // },
       //Create a new one
       createMessage(_, { input }) {
         // Create a random id for our "database".
