@@ -1,7 +1,7 @@
 const express = require('express');
 const { ApolloServer} = require('apollo-server-express');
 const {typeDefs, resolvers} = require('../graphql/index');
-const {contextValue} = require('./contex');
+const {arrayOfContext} = require('./context');
 
 function loggingMiddleware(req, res, next) {
   console.log("server line 7 ip:", req.ip)
@@ -16,7 +16,7 @@ const app = express();
 const server = new ApolloServer({ 
   typeDefs, 
   resolvers,
-  context: contextValue,
+  context: arrayOfContext,
   introspection: true,
   formatError: (error) => {
     const { message, path } = error;
@@ -30,7 +30,6 @@ async function startServer() {
   
   //logging middleware
   app.use(loggingMiddleware);
-  // app.use(contextValue);
   
   server.applyMiddleware({ app });
 }
