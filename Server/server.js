@@ -2,6 +2,7 @@ const express = require('express');
 const { ApolloServer} = require('apollo-server-express');
 const {typeDefs, resolvers} = require('../graphql/index');
 const {arrayOfContext} = require('./context');
+const { urlencoded } = require('body-parser');
 
 function loggingMiddleware(req, res, next) {
   console.log("server line 7 ip:", req.ip)
@@ -30,6 +31,11 @@ async function startServer() {
   
   //logging middleware
   app.use(loggingMiddleware);
+
+  //middleware for parsing json Req body
+  app.use(express.json());
+  //middleware for parsing urlencoded req body
+  app.use(urlencoded.json({extended: true}))
   
   server.applyMiddleware({ app });
 }
